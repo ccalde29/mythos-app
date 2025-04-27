@@ -5,6 +5,8 @@
       "dom",
       "dom.iterable",
       "esnext"
+      "jsx": "react-jsx",
+      "types": ["react", "react-dom"]
     ],
     "allowJs": true,
     "skipLibCheck": true,
