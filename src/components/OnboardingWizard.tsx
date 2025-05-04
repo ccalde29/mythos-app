@@ -4,10 +4,8 @@ import { Grade, CulturalRegion } from '../types';
 import ProgressSteps from './Onboarding/ProgressSteps';
 import GradeSelector from './Onboarding/GradeSelector';
 import RegionSelector from './Onboarding/RegionSelector';
-
-interface OnboardingWizardProps {
-  onComplete: (preferences: { grade: Grade; region: CulturalRegion }) => void;
-}
+import StoryTitleSelector from './Onboarding/StoryTitleSelector';
+import { generateStoryContent } from '../services/AIService';
 
 const gradeLevels: Grade[] = [
   {
@@ -54,6 +52,36 @@ const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete }) => {
     grade: null,
     region: null
   });
+  const [storyTitles, setStoryTitles] = useState<string[]>([]);
+  const [loadingStory, setLoadingStory] = useState(false);
+
+  const handleStorySelect = async (title: string) => {
+    if (!preferences.grade || !preferences.region) return;
+    
+    setLoadingStory(true);
+    try {
+      const content = await generateStoryContent(
+        title, 
+        preferences.grade.name
+      );
+      
+      onComplete({
+        grade: preferences.grade,
+        region: preferences.region,
+        story: {
+          title,
+          content,
+          region: preferences.region.name,
+          gradeLevel: preferences.grade.name
+        }
+      });
+    } catch (error) {
+      console.error("Failed to generate story:", error);
+      // Handle error appropriately
+    } finally {
+      setLoadingStory(false);
+    }
+  };
 
   return (
     <div className="bg-amber-50 p-8 rounded-xl max-w-md mx-auto">
@@ -70,18 +98,24 @@ const OnboardingWizard: React.FC<OnboardingWizardProps> = ({ onComplete }) => {
       )}
 
       {step === 2 && preferences.grade && (
-        <RegionSelector
-          regions={culturalRegions}
-          onSelect={(region) => {
-            setPreferences(p => ({ ...p, region }));
-            if (preferences.grade && region) {
-              onComplete({
-                grade: preferences.grade,
-                region
-              });
-            }
-          }}
-        />
+        <>
+          {storyTitles.length > 0 ? (
+            <StoryTitleSelector 
+              titles={storyTitles}
+              onSelect={handleStorySelect}
+              loading={loadingStory}
+            />
+          ) : (
+            <RegionSelector
+              regions={culturalRegions}
+              grade={preferences.grade.name}
+              onSelect={async (region) => {
+                setPreferences(p => ({ ...p, region }));
+              }}
+              onStoryTitlesReady={setStoryTitles}
+            />
+          )}
+        </>
       )}
     </div>
   );

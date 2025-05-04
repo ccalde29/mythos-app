@@ -1,10 +1,29 @@
-// src/types/story.ts
-export interface Story {
+// src/types.ts
+export interface Grade {
+  id: number;
+  name: string;
+  icon: string;
+  description: string;
+  ages: string;
+}
+
+export interface CulturalRegion {
   id: string;
+  name: string;
+  color: string;
+  icon: string;
+  fact: string;
+}
+
+export interface Story {
   title: string;
   content: string;
-  created_at: string;
-  difficulty?: 'easy' | 'hard'; // Optional for backwards compatibility
-  prompt_id?: string;
-  user_id?: string;
+  region: string;
+  gradeLevel: string;
+}
+
+export interface OnboardingCompleteData {
+  grade: Grade;
+  region: CulturalRegion;
+  story: Story;
 }
