@@ -1,5 +1,11 @@
-// babel.config.js (updated)
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
-  // Keep any other plugins you need, but remove the dotenv one
+  presets: [
+    'module:metro-react-native-babel-preset',
+    ['module:react-native-dotenv', {
+      moduleName: '@env',
+      path: '.env',
+      safe: true,
+      allowUndefined: false,
+    }]
+  ]
 };

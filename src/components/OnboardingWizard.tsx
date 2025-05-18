@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 import { Grade, CulturalRegion } from '../types';
 import ProgressSteps from './Onboarding/ProgressSteps';
 import GradeSelector from './Onboarding/GradeSelector';
-import RegionSelector from './Onboarding/RegionSelector';
+import { RegionSelector } from './Onboarding/RegionSelector';
 import StoryTitleSelector from './Onboarding/StoryTitleSelector';
-import { generateStoryContent } from '../services/AIService';
 
 const gradeLevels: Grade[] = [
   {

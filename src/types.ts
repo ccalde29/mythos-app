@@ -33,3 +33,6 @@ export interface UserProfile {
   preferred_region: CulturalRegion | null;
   onboarding_complete: boolean;
 }
+interface OnboardingWizardProps {
+  onComplete: (preferences: { grade: Grade; region: CulturalRegion }) => void;
+}

@@ -7,6 +7,7 @@ import { FaPlay, FaStop, FaVolumeUp, FaArrowLeft } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import type { IconType } from 'react-icons';
 
+
 // Type for our story data
 interface Story {
   id: string;
